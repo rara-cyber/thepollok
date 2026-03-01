@@ -1,0 +1,93 @@
+@import "tailwindcss";
+
+/* ─── Tailwind v4 Theme ─── */
+@theme inline {
+  /* Fonts */
+  --font-serif: var(--font-cormorant);
+  --font-sans: var(--font-karla);
+
+  /* Earth palette */
+  --color-earth-50: #FAF8F4;
+  --color-earth-100: #F5F0E8;
+  --color-earth-200: #E8DFD1;
+  --color-earth-300: #D4C5AD;
+  --color-earth-400: #C4A882;
+  --color-earth-500: #B8976A;
+  --color-earth-600: #8B7355;
+  --color-earth-700: #6B5E52;
+  --color-earth-800: #3D3229;
+  --color-earth-900: #2C2420;
+
+  /* Named accents */
+  --color-sage: #A8B5A0;
+  --color-sage-light: #C2CCBC;
+  --color-terracotta: #C4835A;
+  --color-gold: #B8976A;
+}
+
+/* ─── Z-index scale ─── */
+:root {
+  --z-base: 0;
+  --z-above: 10;
+  --z-dropdown: 20;
+  --z-sticky: 30;
+  --z-navbar: 50;
+  --z-modal: 100;
+  --z-overlay: 200;
+  --z-grain: 9999;
+}
+
+/* ─── Base ─── */
+html {
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+body {
+  background: var(--color-earth-100);
+  color: var(--color-earth-800);
+  font-family: var(--font-sans);
+}
+
+/* ─── Grain overlay ─── */
+.grain-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: var(--z-grain);
+  opacity: 0.03;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+}
+
+/* ─── Warm image filter ─── */
+.img-warm {
+  filter: saturate(0.9) brightness(1.02) sepia(0.05);
+}
+
+/* ─── Hero zoom animation ─── */
+@keyframes hero-zoom {
+  0% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(1.05);
+  }
+}
+
+.hero-zoom {
+  animation: hero-zoom 20s ease-in-out infinite alternate;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-zoom {
+    animation: none;
+  }
+}
