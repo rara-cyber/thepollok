@@ -91,3 +91,217 @@ body {
     animation: none;
   }
 }
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   V2 MODERN ORGANIC STYLES
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* ─── V2 Extended Color Palette ─── */
+@theme inline {
+  /* V2 Organic colors */
+  --color-cream: #FFFEF7;
+  --color-cream-dark: #F9F7ED;
+  --color-blush: #F5E6E0;
+  --color-blush-dark: #E8D4CC;
+  --color-moss: #7A8B6E;
+  --color-moss-light: #9AAD8E;
+  --color-moss-dark: #5C6A53;
+  --color-coral: #E8A598;
+  --color-coral-light: #F4C4BA;
+  --color-coral-dark: #D4877A;
+  --color-sand: #E8DFD1;
+  --color-forest: #3D4A36;
+}
+
+/* ─── V2 Border Radius Scale (Organic) ─── */
+:root {
+  --radius-sm: 12px;
+  --radius-md: 24px;
+  --radius-lg: 40px;
+  --radius-xl: 60px;
+  --radius-2xl: 80px;
+  --radius-full: 9999px;
+}
+
+/* ─── V2 Keyframe Animations ─── */
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-20px) rotate(3deg);
+  }
+}
+
+@keyframes float-reverse {
+  0%, 100% {
+    transform: translateY(0) rotate(0deg);
+  }
+  50% {
+    transform: translateY(20px) rotate(-3deg);
+  }
+}
+
+@keyframes morph {
+  0%, 100% {
+    border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
+  }
+  25% {
+    border-radius: 30% 60% 70% 40% / 50% 60% 30% 60%;
+  }
+  50% {
+    border-radius: 50% 60% 30% 60% / 30% 60% 70% 40%;
+  }
+  75% {
+    border-radius: 60% 40% 60% 30% / 70% 30% 50% 60%;
+  }
+}
+
+@keyframes wave {
+  0% {
+    transform: translateX(0) translateZ(0) scaleY(1);
+  }
+  50% {
+    transform: translateX(-25%) translateZ(0) scaleY(0.8);
+  }
+  100% {
+    transform: translateX(-50%) translateZ(0) scaleY(1);
+  }
+}
+
+@keyframes spin-slow {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes pulse-glow {
+  0%, 100% {
+    box-shadow: 0 0 20px rgba(232, 165, 152, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 40px rgba(232, 165, 152, 0.6);
+  }
+}
+
+@keyframes draw-line {
+  from {
+    stroke-dashoffset: 1000;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+/* ─── V2 Animation Utilities ─── */
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+.animate-float-reverse {
+  animation: float-reverse 7s ease-in-out infinite;
+}
+
+.animate-float-slow {
+  animation: float 10s ease-in-out infinite;
+}
+
+.animate-morph {
+  animation: morph 15s ease-in-out infinite;
+}
+
+.animate-wave {
+  animation: wave 15s linear infinite;
+}
+
+.animate-spin-slow {
+  animation: spin-slow 30s linear infinite;
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 3s ease-in-out infinite;
+}
+
+/* ─── V2 Reduced Motion ─── */
+@media (prefers-reduced-motion: reduce) {
+  .animate-float,
+  .animate-float-reverse,
+  .animate-float-slow,
+  .animate-morph,
+  .animate-wave,
+  .animate-spin-slow,
+  .animate-pulse-glow {
+    animation: none;
+  }
+}
+
+/* ─── V2 Organic Card ─── */
+.organic-card {
+  border-radius: var(--radius-lg);
+  transition: all 0.4s cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+.organic-card:hover {
+  transform: translateY(-8px) scale(1.01);
+  box-shadow: 0 25px 50px -12px rgba(61, 74, 54, 0.15);
+}
+
+/* ─── V2 Blob Mask ─── */
+.blob-mask {
+  border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
+}
+
+.blob-mask-alt {
+  border-radius: 40% 60% 70% 30% / 50% 60% 30% 60%;
+}
+
+/* ─── V2 Gradient Backgrounds ─── */
+.bg-gradient-organic {
+  background: linear-gradient(
+    135deg,
+    var(--color-cream) 0%,
+    var(--color-blush) 50%,
+    var(--color-cream-dark) 100%
+  );
+}
+
+.bg-gradient-moss {
+  background: linear-gradient(
+    180deg,
+    var(--color-moss-light) 0%,
+    var(--color-moss) 100%
+  );
+}
+
+.bg-gradient-warm {
+  background: linear-gradient(
+    135deg,
+    var(--color-coral-light) 0%,
+    var(--color-blush) 50%,
+    var(--color-cream) 100%
+  );
+}
+
+/* ─── V2 Text Gradient ─── */
+.text-gradient-organic {
+  background: linear-gradient(135deg, var(--color-forest) 0%, var(--color-moss) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ─── V2 Glass Effect ─── */
+.glass {
+  background: rgba(255, 254, 247, 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.glass-dark {
+  background: rgba(61, 74, 54, 0.8);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
