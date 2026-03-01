@@ -56,7 +56,10 @@ This is a **single-page landing page MVP** to present to the client. It is **fro
 ```bash
 npx create-next-app@latest thepollok --typescript --tailwind --app --src-dir
 cd thepollok
-npm install daisyui
+npm install daisyui@^4
+npm install framer-motion
+npm install lucide-react
+npm install @calcom/embed-react
 ```
 
 Configure `tailwind.config.ts` with the custom earth-tone theme (see Section 4).
@@ -198,6 +201,8 @@ Accent:
 - Terracotta (hover states):  #C4835A
 ```
 
+> ⚠️ **Accessibility note:** Never use Soft Sage (#A8B5A0) or Warm Tan (#C4A882) as text color on cream/off-white backgrounds — contrast ratios fail WCAG AA (1.89:1 and 2.00:1 respectively). Use these colors only as background fills, borders, or decorative elements. For text, always use Deep Earth (#3D3229) or Medium Brown (#6B5E52).
+
 ### 4.2 Typography
 
 Use Google Fonts. Import in `layout.tsx` using `next/font/google`. The combination should feel editorial and luxurious — like a high-end travel magazine, not a tech startup.
@@ -264,6 +269,26 @@ Full-bleed images:            w-full, no max-width constraint
   opacity: 0.03;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
 }
+
+/* Z-index scale — prevents conflicts between navbar, modal, grain overlay */
+:root {
+  --z-base: 0;
+  --z-above: 10;
+  --z-dropdown: 20;
+  --z-sticky: 30;
+  --z-navbar: 50;
+  --z-modal: 100;
+  --z-overlay: 200;
+  --z-grain: 9999;
+}
+
+/* Smooth scroll with reduced motion fallback */
+html {
+  scroll-behavior: smooth;
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+}
 ```
 
 **Section transitions:** Instead of hard-cut between sections, use subtle gradient fades between background colors. E.g., `--color-cream` into `--color-warm-white` should feel seamless.
@@ -289,7 +314,7 @@ Full-bleed images:            w-full, no max-width constraint
 ```
 Primary CTA:
 - Background: Muted Gold (#B8976A)
-- Text: White, uppercase, Karla 400, letter-spacing 0.15em, text-sm
+- Text: Deep Earth (#3D3229), uppercase, Karla 400, letter-spacing 0.15em, text-sm
 - Padding: px-10 py-4
 - Border-radius: rounded-none (sharp rectangle)
 - Hover: Background shifts to Terracotta (#C4835A), transition-all duration-500
@@ -324,6 +349,20 @@ Hero video:
 
 Page transitions:
 - None needed for MVP (single page)
+
+Reduced motion (required for WCAG 2.1 — vestibular disorder accessibility):
+```css
+@media (prefers-reduced-motion: reduce) {
+  /* Disable hero zoom animation */
+  video { animation: none; }
+  /* Disable parallax */
+  .parallax { transform: none !important; }
+  /* Instant fade-ins instead of animated */
+  .fade-in { opacity: 1; transform: none; transition: none; }
+  /* Replace autoplay video with static poster */
+  video[autoplay] { display: none; }
+}
+```
 ```
 
 ### 4.7 DaisyUI Configuration
@@ -457,6 +496,17 @@ CTA Button:     "Discover the Journey"
 - For MVP, use a free stock video. Search for: "Bali rice terrace drone shot" or "woman yoga sunrise" on Pexels/Coverr
 - Fallback: use `hero-poster.jpg` as a static image for slow connections (poster attribute on video)
 
+**Hero video implementation:**
+```html
+<video autoPlay muted loop playsInline preload="none" poster="/images/hero-poster.jpg">
+  <source src="/video/hero.webm" type="video/webm" />
+  <source src="/video/hero.mp4" type="video/mp4" />
+</video>
+```
+- Use `preload="none"` to avoid loading video data before first paint
+- WebM must be listed first — ~30% smaller than MP4, all modern browsers support it
+- On `prefers-reduced-motion: reduce`, hide the video element and show the poster image instead
+
 **Responsive:**
 - Mobile: text-3xl heading, reduce padding
 - Video may be replaced with static image on very slow connections
@@ -493,7 +543,7 @@ Mobile (stacked):
 **Content:**
 ```
 Section label:  "OUR STORY"
-               (uppercase, tracked, text-xs, text-earth-400, mb-4)
+               (uppercase, tracked, text-xs, text-earth-700, mb-4)
 
 Heading:        "She built this for you."
                (Cormorant Garamond, font-light, text-4xl md:text-5xl, text-earth-800)
@@ -738,10 +788,7 @@ Desktop:
 - Cal.com integration: Use `@calcom/embed-react` package or a simple iframe
 - For MVP: if no Cal.com link is available yet, show the CTA button as a placeholder that links to `#` with a `mailto:` fallback
 
-**Cal.com embed setup:**
-```bash
-npm install @calcom/embed-react
-```
+**Cal.com embed setup** (already included in Section 2.1 install commands):
 
 ```tsx
 import Cal from "@calcom/embed-react";
